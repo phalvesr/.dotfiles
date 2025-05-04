@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Returns false if user is not a sudoer, 
+# otherwise returns true
+is_sudoer() {
+    sudo -n true &> /dev/null
+    if [ $? -ne 0 ]
+    then
+        echo "false"
+    else
+        echo "true"
+    fi 
+}
+
+install_python3_at_newest_version() {
+    sudo apt update
+    sudo apt install python3
+}
+
+install_vscode_at_version() {
+    local vs_code_version="$1"
+    local vs_code_output_file="vscode-at-$vs_code_version.deb"
+
+    VS_CODE_DOWNLOAD_LINK="https://update.code.visualstudio.com/$vs_code_version/linux-deb-x64/stable"
+
+    if [ "$(which code)" != "" ]
+    then
+        echo "Visual studion code is already installed. More information about installed version:"
+        code --version
+        return
+    fi
+
+    curl -X GET -v $VS_CODE_DOWNLOAD_LINK \
+        -o $vs_code_output_file
+
+    dpkg --install $vs_code_output_file
+}

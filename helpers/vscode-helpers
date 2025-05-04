@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+install_vscode_extensions() {
+    local extensions_list_file_path="$1"
+    
+    echo "Trying to read extensions list from $extensions_list_file_path"
+
+    while IFS= read -r extension_name
+    do
+        code --install-extension $extension_name
+    done < $extensions_list_file_path
+}

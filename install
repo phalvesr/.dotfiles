@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+
+HOME_DIR="$HOME"
+CURRENT_DIR="$(pwd)"
+DOT_DIRECTORIES="$(ls -d .*/)"
+
+# Importing helper functions to current bash 
+source "$CURRENT_DIR/helpers/install-helpers"
+source "$CURRENT_DIR/helpers/vscode-helpers"
+source "$CURRENT_DIR/helpers/exit-codes"
+
+if [ "$(is_sudoer)" = "false" ]
+then
+    echo "This script should be ran as sudoer. Please execute it with sudo priviledge"
+    exit $EXIT_CODE_USER_IS_NOT_SUDOER
+fi
+
+install_python3_at_newest_version
+
+install_vscode_at_version "1.91.1"
+install_vscode_extensions "$CURRENT_DIR/config/vscode-extensions.txt"
